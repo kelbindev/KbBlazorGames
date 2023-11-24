@@ -1,0 +1,80 @@
+﻿@page "/minesweeper"
+@using LogicLayer.MineSweeper
+@using Towel
+
+<PageTitle>Mine Sweeper</PageTitle>
+
+<h3>Mine Sweeper</h3>
+
+@code {
+    Game game = new Game();
+    Level level = new Level();
+
+    string GridColumns => "auto ".Repeat(game.Width);
+    Cell[,] _board;
+    Cell[,] Board => _board ?? (_board = game.GenerateBoard());
+    bool Win => game.WinCheck(_board);
+
+    List<Option<string>> levelsOption = new List<Option<string>>();
+
+    string selectedLevel = string.Empty;
+    Level? selLevel => level.AllLevels().ToList().Where(l => l.LevelName == selectedLevel).FirstOrDefault();
+    int selLevelWidth => selLevel is null ? 10 : selLevel.Width;
+    int selLevelHeight => selLevel is null ? 10 : selLevel.Height;
+}
+
+@{
+    levelsOption.Clear();
+    foreach (var lvl in level.AllLevels().ToList())
+    {
+        bool sel = lvl.LevelName == "Beginner" ? true : false;
+        Option<String> item = new Option<string> { Value = lvl.LevelName, Text = lvl.LevelName, Selected =  sel};
+        levelsOption.Add(item);
+    }
+}
+
+<FluentGrid Spacing="3">
+    <FluentCombobox Items=@levelsOption
+                    OptionText="@(i => i.Text)"
+                    OptionValue="@(i => i.Value)"
+                    OptionSelected="@(i => i.Selected)"
+                    @bind-Value="@selectedLevel" />
+    <FluentButton OnClick="() => { _board = game.GenerateBoard(selLevelWidth, selLevelHeight); StateHasChanged(); }">New Game</FluentButton>
+</FluentGrid>
+<br />
+<br />
+<FluentGrid Spacing="3">
+    <div class="board">
+        @foreach (int i in Enumerable.Range(0, Board.GetLength(0)))
+        {
+            @foreach (int j in Enumerable.Range(0, Board.GetLength(1)))
+            {
+                Cell cell = Board[i, j];
+                <button class="cell @cell.Mine @cell.Safe @cell.Danger" @onclick="() => {
+                    game.ClickCell(i, j, _board);
+                    StateHasChanged();
+                }">@cell.Display</button>
+            }
+        }
+    </div>
+    @if (Win)
+    {
+        <div class="row winmessage" style="display:block">
+            You Win! Press "New Game" to generate a new puzzle.
+        </div>
+    }
+</FluentGrid>
+
+<style>
+    .board {
+        display: grid;
+        grid-template-columns: @GridColumns;
+        background-color: #333;
+        width: auto;
+        height: auto;
+        column-gap: .25rem;
+        row-gap: .25rem;
+        padding: .5rem;
+        float: left;
+    }
+</style>
