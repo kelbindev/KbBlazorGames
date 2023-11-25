@@ -28,22 +28,23 @@
     foreach (var lvl in level.AllLevels().ToList())
     {
         bool sel = lvl.LevelName == "Beginner" ? true : false;
-        Option<String> item = new Option<string> { Value = lvl.LevelName, Text = lvl.LevelName, Selected =  sel};
+        Option<String> item = new Option<string> { Value = lvl.LevelName, Text = lvl.LevelName, Selected = sel };
         levelsOption.Add(item);
     }
 }
 
-<FluentGrid Spacing="3">
-    <FluentCombobox Items=@levelsOption
-                    OptionText="@(i => i.Text)"
-                    OptionValue="@(i => i.Value)"
-                    OptionSelected="@(i => i.Selected)"
-                    @bind-Value="@selectedLevel" />
-    <FluentButton OnClick="() => { _board = game.GenerateBoard(selLevelWidth, selLevelHeight); StateHasChanged(); }">New Game</FluentButton>
+<FluentGrid>
+    <FluentGridItem xs="12" sm="4">
+        <FluentCombobox Items=@levelsOption
+                        OptionText="@(i => i.Text)"
+                        OptionValue="@(i => i.Value)"
+                        OptionSelected="@(i => i.Selected)"
+                        @bind-Value="@selectedLevel" />
+        <FluentButton Appearance="Appearance.Accent"  OnClick="() => { _board = game.GenerateBoard(selLevelWidth, selLevelHeight); StateHasChanged(); }">New Game</FluentButton>
+    </FluentGridItem>
 </FluentGrid>
-<br />
-<br />
-<FluentGrid Spacing="3">
+
+<FluentGrid Style="padding-top:10px">
     <div class="board">
         @foreach (int i in Enumerable.Range(0, Board.GetLength(0)))
         {
@@ -53,7 +54,9 @@
                 <button class="cell @cell.Mine @cell.Safe @cell.Danger" @onclick="() => {
                     game.ClickCell(i, j, _board);
                     StateHasChanged();
-                }">@cell.Display</button>
+                }">
+                    @cell.Display
+                </button>
             }
         }
     </div>

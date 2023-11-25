@@ -263,20 +263,16 @@
 
 <PageTitle>Tetris</PageTitle>
 
-<div class="row">
-    <div class="col">
-        @if (grid.State == GameState.NotStarted)
+<FluentGrid Justify="@Justification">
+    <FluentGridItem xs="12" sm="4">
+        @if (grid.State == GameState.NotStarted || grid.State == GameState.GameOver)
         {
-            <FluentButton OnClick="RunGame">New Game</FluentButton>
+            <FluentButton OnClick="RunGame" Appearance="Appearance.Accent">New Game</FluentButton>
         }
-        @if (grid.State == GameState.GameOver)
-        {
-            <FluentButton OnClick="NewGame">New Game</FluentButton>
-        }
-        <br />
-        <FluentCheckbox id="playAudio" Label="Play Music" type="checkbox" @bind-value="playAudio" disabled />
-    </div>
-</div>
+        <br/>
+        <FluentCheckbox Style="padding-top:10px" id="playAudio" Label="Play Music" type="checkbox" @bind-value="playAudio" disabled />
+    </FluentGridItem>
+</FluentGrid>
 
 <FluentGrid Spacing="3" Justify="@Justification">
     <FluentGridItem xs="12" sm="4">
