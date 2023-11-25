@@ -215,15 +215,7 @@
             }
             if (e.Key == "ArrowDown")
             {
-                int addlScore = currentTetromino.Drop();
-
-                //Tell the game loop to skip the standard delay
-                skipDelay = true;
-
-                //Add in the hard drop score
-                score += addlScore;
-
-                //Refresh The Display
+                MoveDown();
                 StateHasChanged();
             }
             if (e.Key == "ArrowUp")
@@ -236,6 +228,17 @@
             }
             StateHasChanged();
         }
+    }
+
+    void MoveDown()
+    {
+        int addlScore = currentTetromino.Drop();
+
+        //Tell the game loop to skip the standard delay
+        skipDelay = true;
+
+        //Add in the hard drop score
+        score += addlScore;
     }
 
     public void LevelChange()
@@ -292,6 +295,14 @@
                 </div>
             }
         </div>
+        <FluentGrid Class="tetris-controls">
+            <FluentGridItem xs="12">
+                <FluentButton Appearance="Appearance.Accent" OnClick="() => { currentTetromino.MoveLeft(); StateHasChanged(); }">←</FluentButton>
+                <FluentButton Appearance="Appearance.Accent" OnClick="() => { currentTetromino.Rotate(); StateHasChanged(); }">↑</FluentButton>
+                <FluentButton Appearance="Appearance.Accent" OnClick="() => { MoveDown(); StateHasChanged(); }">↓</FluentButton>
+                <FluentButton Appearance="Appearance.Accent" OnClick="() => { currentTetromino.MoveRight(); StateHasChanged(); }">→</FluentButton>
+            </FluentGridItem>
+        </FluentGrid>
     </FluentGridItem>
 
     <FluentGridItem xs="12" sm="12" lg="3">
