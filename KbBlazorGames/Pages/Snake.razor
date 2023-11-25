@@ -20,12 +20,13 @@
             </svg>
         </FluentGridItem>
     </FluentGrid>
+
     <FluentGrid>
         <FluentGridItem Class="controls">
             <FluentButton Appearance="Appearance.Accent" OnClick="() => { CurrentDirection = Direction.Left; Timer.Enabled = !GameOver && true; }">←</FluentButton>
-            <FluentButton Appearance="Appearance.Accent" OnClick="() => { CurrentDirection = Direction.Right; Timer.Enabled = !GameOver && true; }">→</FluentButton>
             <FluentButton Appearance="Appearance.Accent" OnClick="() => { CurrentDirection = Direction.Up; Timer.Enabled = !GameOver && true; }">↑</FluentButton>
             <FluentButton Appearance="Appearance.Accent" OnClick="() => { CurrentDirection = Direction.Down; Timer.Enabled = !GameOver && true; }">↓</FluentButton>
+            <FluentButton Appearance="Appearance.Accent" OnClick="() => { CurrentDirection = Direction.Right; Timer.Enabled = !GameOver && true; }">→</FluentButton>
         </FluentGridItem>
     </FluentGrid>
 
