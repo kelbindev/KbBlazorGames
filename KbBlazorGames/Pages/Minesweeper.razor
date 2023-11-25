@@ -34,38 +34,44 @@
 }
 
 <FluentGrid>
-    <FluentGridItem xs="12" sm="4">
+    <FluentGridItem xs="12">
         <FluentCombobox Items=@levelsOption
                         OptionText="@(i => i.Text)"
                         OptionValue="@(i => i.Value)"
                         OptionSelected="@(i => i.Selected)"
                         @bind-Value="@selectedLevel" />
-        <FluentButton Appearance="Appearance.Accent"  OnClick="() => { _board = game.GenerateBoard(selLevelWidth, selLevelHeight); StateHasChanged(); }">New Game</FluentButton>
+        <FluentButton Appearance="Appearance.Accent" OnClick="() => { _board = game.GenerateBoard(selLevelWidth, selLevelHeight); StateHasChanged(); }">New Game</FluentButton>
     </FluentGridItem>
-</FluentGrid>
 
-<FluentGrid Style="padding-top:10px">
-    <div class="board">
-        @foreach (int i in Enumerable.Range(0, Board.GetLength(0)))
-        {
-            @foreach (int j in Enumerable.Range(0, Board.GetLength(1)))
+    <FluentGridItem Style="padding-top:10px" xs="12">
+        <div class="board">
+            @foreach (int i in Enumerable.Range(0, Board.GetLength(0)))
             {
-                Cell cell = Board[i, j];
-                <button class="cell @cell.Mine @cell.Safe @cell.Danger" @onclick="() => {
+                @foreach (int j in Enumerable.Range(0, Board.GetLength(1)))
+                {
+                    Cell cell = Board[i, j];
+                    <button class="cell @cell.Mine @cell.Safe @cell.Danger" @onclick="() => {
                     game.ClickCell(i, j, _board);
                     StateHasChanged();
                 }">
-                    @cell.Display
-                </button>
+                        @cell.Display
+                    </button>
+                }
             }
-        }
-    </div>
-    @if (Win)
-    {
-        <div class="row winmessage" style="display:block">
-            You Win! Press "New Game" to generate a new puzzle.
         </div>
-    }
+        @if (Win)
+        {
+            <div class="row winmessage" style="display:block">
+                You Win! Press "New Game" to generate a new puzzle.
+            </div>
+        }
+    </FluentGridItem>
+
+    <FluentGridItem Style="padding-top:10px" xs="12">
+        <FluentCard>
+            <p><strong style="font-weight:bold">How To Play</strong>: Reveal tiles by clicking them, but be careful not to reveal a bomb. Reveal all the non-bomb tiles and you win. The number on each tile is the number of bombs that are adjacent to it (including diaganols).</p>
+        </FluentCard>
+    </FluentGridItem>
 </FluentGrid>
 
 <style>

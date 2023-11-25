@@ -269,13 +269,15 @@
         {
             <FluentButton OnClick="RunGame" Appearance="Appearance.Accent">New Game</FluentButton>
         }
-        <br/>
-        <FluentCheckbox Style="padding-top:10px" id="playAudio" Label="Play Music" type="checkbox" @bind-value="playAudio" disabled />
+        @if (grid.State == GameState.Playing)
+        {
+            <FluentCheckbox Style="padding-top:10px" id="playAudio" Label="Play Music" type="checkbox" @bind-value="playAudio" disabled />
+        }
     </FluentGridItem>
 </FluentGrid>
 
 <FluentGrid Spacing="3" Justify="@Justification">
-    <FluentGridItem xs="12" sm="4">
+    <FluentGridItem xs="12" sm="12" lg="3">
         <div class="tetris-container" tabindex="0" @onkeydown="KeyDown" @ref="gameBoardDiv">
             @for (int i = grid.Height; i >= 1; i--)
             {
@@ -292,7 +294,7 @@
         </div>
     </FluentGridItem>
 
-    <FluentGridItem xs="12" sm="4">
+    <FluentGridItem xs="12" sm="12" lg="3">
         @if (grid.IsStarted)
         {
             <div class="row">
@@ -305,18 +307,16 @@
             <TetrisTetrominoDisplay Style="thirdNextStyle" />
         }
 
-        <div class="row">
-            <div class="alert alert-dismissible alert-secondary">
-                <strong>How To Play:</strong> <br />
-                <span>&#8592;</span> / <span>&#8594;</span> Move Tetromino<br />
-                <span>&#8593;</span>: Rotate Tetromino<br />
-                <span>&#8595;</span> / <span>Space</span>: Drop Tetromino<br />
-                <span>M</span>: Toggle Audio
-            </div>
-        </div>
+        <FluentCard Height="auto">
+            <strong>How To Play:</strong> <br />
+            <span>&#8592;</span> / <span>&#8594;</span> Move Tetromino<br />
+            <span>&#8593;</span>: Rotate Tetromino<br />
+            <span>&#8595;</span> / <span>Space</span>: Drop Tetromino<br />
+            <span>M</span>: Toggle Audio
+        </FluentCard>
     </FluentGridItem>
 
-    <FluentGridItem xs="12" sm="4">
+    <FluentGridItem xs="12" sm="12" lg="3">
         <div class="row">
             <div class="col">
                 <h4>Score: @score</h4>
