@@ -189,7 +189,7 @@
         grid.State = GameState.Playing;
     }
 
-    public void NewGame()
+    public async Task NewGame()
     {
         grid = new Grid();
 
@@ -199,6 +199,8 @@
 
         level = 1;
         score = 0;
+
+        await RunGame();
     }
 
     protected async Task KeyDown(KeyboardEventArgs e)
@@ -268,10 +270,16 @@
 
 <FluentGrid Justify="@Justification">
     <FluentGridItem xs="12" sm="4">
-        @if (grid.State == GameState.NotStarted || grid.State == GameState.GameOver)
+        @if (grid.State == GameState.NotStarted)
         {
             <FluentButton OnClick="RunGame" Appearance="Appearance.Accent">New Game</FluentButton>
         }
+        
+        @if(grid.State == GameState.GameOver)
+        {
+            <FluentButton OnClick="NewGame" Appearance="Appearance.Accent">New Game</FluentButton>
+        }
+
         @if (grid.State == GameState.Playing)
         {
             <FluentCheckbox Style="padding-top:10px" id="playAudio" Label="Play Music" type="checkbox" @bind-value="playAudio" disabled />

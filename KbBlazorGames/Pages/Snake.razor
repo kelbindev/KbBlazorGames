@@ -2,6 +2,8 @@
 @page "/snake"
 @using LogicLayer.Snake.Enum
 
+@inject IJSRuntime _jsRuntime;
+
 <PageTitle>Snake</PageTitle>
 
 <h3>Snake</h3>
@@ -13,6 +15,16 @@
     int Height = 15;
     bool GameOver = false;
     Direction CurrentDirection;
+
+    protected ElementReference gameBoardDiv;
+
+    protected override async void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await Reset();
+        }
+    }
 
     (int I, int J)? _snakeHead;
     (int I, int J) SnakeHead
@@ -66,7 +78,7 @@
         }
     }
 
-    void Reset()
+    async Task Reset()
     {
         if (_timer is not null)
         {
@@ -83,6 +95,9 @@
         _timer.Interval = 300;
         _timer.Elapsed += (_, _) => { Update(); };
         _timer.Enabled = false;
+        
+        await _jsRuntime.InvokeVoidAsync("SetFocusToElement", gameBoardDiv);
+
         StateHasChanged();
     }
 
@@ -170,12 +185,12 @@
     }
 }
 
-<div @onkeydown="@OnKeyDown" tabindex="0">
-    <FluentGrid>
-        <FluentGridItem xs="12">
-            <FluentButton Appearance="Appearance.Accent" OnClick="Reset">New Game</FluentButton>
-        </FluentGridItem>
-        <FluentGridItem xs="12">
+<FluentGrid>
+    <FluentGridItem xs="12">
+        <FluentButton Appearance="Appearance.Accent" OnClick="Reset">New Game</FluentButton>
+    </FluentGridItem>
+    <FluentGridItem xs="12">
+        <div @onkeydown="@OnKeyDown" tabindex="0" @ref="gameBoardDiv">
             <svg width="60vmin" height="60vmin" viewBox="0 0 @Board.GetLength(0) @Board.GetLength(1)" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
                 @for (int i = 0; i < Board.GetLength(0); i++)
                 {
@@ -185,25 +200,25 @@
                     }
                 }
             </svg>
-            <div class="row gameovermessage" style="display:@(GameOver ? "block" : "none")">
-                Game Over!
-            </div>
-        </FluentGridItem>
-    </FluentGrid>
-    <FluentGrid>
-        <FluentGridItem Class="controls">
-            <FluentButton Appearance="Appearance.Accent" OnClick="() => { CurrentDirection = Direction.Left; Timer.Enabled = !GameOver && true; }">←</FluentButton>
-            <FluentButton Appearance="Appearance.Accent" OnClick="() => { CurrentDirection = Direction.Up; Timer.Enabled = !GameOver && true; }">↑</FluentButton>
-            <FluentButton Appearance="Appearance.Accent" OnClick="() => { CurrentDirection = Direction.Down; Timer.Enabled = !GameOver && true; }">↓</FluentButton>
-            <FluentButton Appearance="Appearance.Accent" OnClick="() => { CurrentDirection = Direction.Right; Timer.Enabled = !GameOver && true; }">→</FluentButton>
-        </FluentGridItem>
-    </FluentGrid>
-    
-    <FluentGridItem Style="padding-top:10px" xs="12">
-        <FluentCard>
-            <strong>Rules:</strong>
-            Collect as many yellow tiles as you can without running into a wall or yourself. To start, press any of the arrow keys.
-            Keyboard inputs (←, →, ↑, ↓) are supported if you <i>click on the board</i>.
-        </FluentCard>
+        </div>
+        <div class="row gameovermessage" style="display:@(GameOver ? "block" : "none")">
+            Game Over!
+        </div>
     </FluentGridItem>
-</div>
+</FluentGrid>
+<FluentGrid>
+    <FluentGridItem Class="controls">
+        <FluentButton Appearance="Appearance.Accent" OnClick="() => { CurrentDirection = Direction.Left; Timer.Enabled = !GameOver && true; }">←</FluentButton>
+        <FluentButton Appearance="Appearance.Accent" OnClick="() => { CurrentDirection = Direction.Up; Timer.Enabled = !GameOver && true; }">↑</FluentButton>
+        <FluentButton Appearance="Appearance.Accent" OnClick="() => { CurrentDirection = Direction.Down; Timer.Enabled = !GameOver && true; }">↓</FluentButton>
+        <FluentButton Appearance="Appearance.Accent" OnClick="() => { CurrentDirection = Direction.Right; Timer.Enabled = !GameOver && true; }">→</FluentButton>
+    </FluentGridItem>
+</FluentGrid>
+
+<FluentGridItem Style="padding-top:10px" xs="12">
+    <FluentCard>
+        <strong>Rules:</strong>
+        Collect as many yellow tiles as you can without running into a wall or yourself. To start, press any of the arrow keys.
+        Keyboard inputs (←, →, ↑, ↓) are supported if you <i>click on the board</i>.
+    </FluentCard>
+</FluentGridItem>
