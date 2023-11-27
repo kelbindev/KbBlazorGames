@@ -1,11 +1,8 @@
 ﻿@inherits LayoutComponentBase
+
 <FluentLayout>
     <FluentHeader>
         Blazor Playground
-        <FluentSpacer />
-        <FluentNavLink Href="https://www.linkedin.com/in/kelbin-kelbin-b3ba74155/" Target="_blank" Match="NavLinkMatch.All" Icon="@Icon.FromImageUrl("/images/about/linkedin.svg")" IconColor="Color.Neutral" />
-        <FluentNavLink Href="https://github.com/kelbindev/" Target="_blank" Match="NavLinkMatch.All" Icon="@Icon.FromImageUrl("/images/about/github.svg")" IconColor="Color.Neutral" />
-        <FluentNavLink Href="https://drive.google.com/file/d/1S3hQUG2_NFHDipn8F2cfBDaY1nqPQqsv/view?usp=sharing" Target="_blank" Match="NavLinkMatch.All" Icon="@Icon.FromImageUrl("/images/about/cv.svg")" IconColor="Color.Neutral" />
     </FluentHeader>
     <FluentStack Class="main" Orientation="Orientation.Horizontal" Width="100%">
         <NavMenu />
@@ -22,4 +19,11 @@
             </ErrorBoundary>
         </FluentBodyContent>
     </FluentStack>
+    <FluentFooter>
+        <div class="link2">
+            <a href="https://www.linkedin.com/in/kelbin-kelbin-b3ba74155/" target="_blank"><i class="bi bi-linkedin"></i></a> |
+            <a href="https://github.com/kelbindev/" target="_blank"><i class="bi bi-github"></i></a> |
+            <a href="https://drive.google.com/file/d/1S3hQUG2_NFHDipn8F2cfBDaY1nqPQqsv/view?usp=sharing" target="_blank"><i class="bi bi-file-person"></i></a>
+        </div>
+    </FluentFooter>
 </FluentLayout>
